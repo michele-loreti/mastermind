@@ -4,6 +4,8 @@
 package it.unicam.cs.dsm.pas.mastermind;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author loreti
@@ -12,11 +14,9 @@ import java.util.Arrays;
 public class Sequence {
 	
 	private final int[] values;
-	private final int numeroSimboli;
 	
-	public Sequence(int numeroSimboli, int ... values) {
+	public Sequence(int ... values) {
 		this.values = values;
-		this.numeroSimboli = numeroSimboli;
 	}
 	
 	public int getValue(int i) {
@@ -36,21 +36,28 @@ public class Sequence {
 		return new Hint(posizioneCorretta,simboliInComune-posizioneCorretta);
 	}
 
-	private int[] occorrenze() {
-		int[] o = new int[numeroSimboli];
+	private Map<Integer,Integer> occorrenze() {
+		Map<Integer,Integer> o = new HashMap<>();
 		for(int i=0; i<lenght(); i++) {
 			int s = getValue(i);
-			o[s] = o[s]+1;
+			Integer v = o.get(s);
+			if (v==null) {
+				o.put(s, 1);
+			} {
+				o.put(s,v+1);
+			}
 		}
 		return o;
 	}
 		
-	private int numeroSimboliInComune(Sequence s) {
-		int[] o1 = this.occorrenze();
-		int[] o2 = s.occorrenze();
-		int count = 0;
-		for(int i=0;i<o1.length; i++) {
-			count = Math.min(o1[i], o2[2]);
+	private int numeroSimboliInComune(Sequence seq) {
+		Map<Integer,Integer> o1 = this.occorrenze();
+		Map<Integer,Integer> o2 = seq.occorrenze();
+		int count = 0;		
+		for (Integer s : o1.keySet()) {
+			int v1 = o1.get(s);
+			int v2 = o2.getOrDefault(s, 0);
+			count = count+Math.min(v1, v2);
 		}
 		return count;
 	}
