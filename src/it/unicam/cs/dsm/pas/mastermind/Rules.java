@@ -51,12 +51,13 @@ public class Rules {
 			if (symbols[v]) {
 				throw new EccezionePerSimboloDuplicato(v);
 			}
+			symbols[v] = true;
 		}
 	}
 
 	private void checkContent(int[] values) throws EccezionePerSimboloIllegale {
 		for (int i=0;i<values.length;i++) {
-			if ((values[i]<0)||(values[i]>this.numberOfSymbols)) {
+			if ((values[i]<0)||(values[i]>=this.numberOfSymbols)) {
 				throw new EccezionePerSimboloIllegale("Uso di un indice di simbolo illegale: "+values[i]);
 			}
 		}
