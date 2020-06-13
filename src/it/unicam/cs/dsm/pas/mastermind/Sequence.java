@@ -40,12 +40,7 @@ public class Sequence {
 		Map<Integer,Integer> o = new HashMap<>();
 		for(int i=0; i<lenght(); i++) {
 			int s = getValue(i);
-			Integer v = o.get(s);
-			if (v==null) {
-				o.put(s, 1);
-			} {
-				o.put(s,v+1);
-			}
+			o.put(s,o.getOrDefault(s,0)+1);
 		}
 		return o;
 	}
