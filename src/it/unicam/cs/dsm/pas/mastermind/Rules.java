@@ -34,6 +34,15 @@ public class Rules {
 		return withMultiplicity;
 	}
 	
+	public boolean isValid(int ... values) {
+		try {
+			getSequence(values);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
 	public Sequence getSequence(int ... values) throws EccezionePerSequenzaIllegale, EccezionePerSimboloIllegale, EccezionePerSimboloDuplicato {
 		if (values.length != this.length) {
 			throw new EccezionePerSequenzaIllegale("Numero di elementi nella sequenza errato! Aspettati "+this.length+" sono "+values.length+"!");
