@@ -40,4 +40,27 @@ public class Alphabet<T> {
 	public int indexOf(T t) {
 		return this.indexes.getOrDefault(t, -1);
 	}
+
+
+	public int size() {
+		return elements.length;
+	}
+
+
+	public int[] getValues(T[] code) {
+		int[] value = new int[code.length];
+		for( int i=0 ; i<value.length ; i++ ) {
+			value[i] = indexOf(code[i]);
+		}
+		return value;
+	}
+
+
+	public String stringOf(Sequence secret) {
+		String toReturn = "";
+		for( int i=0 ; i<secret.lenght() ;i++) {
+			toReturn += elements[secret.getValue(i)];
+		}
+		return toReturn;
+	}
 }

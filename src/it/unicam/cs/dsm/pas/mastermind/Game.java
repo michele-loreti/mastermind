@@ -52,4 +52,8 @@ public class Game {
 	public int getMaxNumberOfTries() {
 		return tries;
 	}
+
+	public Sequence getSecret() {
+		return secret;
+	}
 }
