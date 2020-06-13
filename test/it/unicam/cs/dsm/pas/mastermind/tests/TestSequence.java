@@ -55,4 +55,10 @@ class TestSequence {
 		assertEquals(0,h.getNumeroSimboliPresentiInPosizioneErrata());
 	}
 
+	@Test
+	void testAddSymbol() {
+		Sequence seq1 = new Sequence(1,2,3,4);
+		Sequence seq2 = new Sequence(1,2,3,4,5);
+		assertEquals(seq2, seq1.add(5));
+	}
 }

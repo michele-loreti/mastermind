@@ -3,8 +3,12 @@
  */
 package it.unicam.cs.dsm.pas.mastermind;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
+import java.util.RandomAccess;
 import java.util.Set;
 
 /**
@@ -114,6 +118,69 @@ public class Rules {
 			values[i] = r.nextInt(this.numberOfSymbols);
 		}
 		return new Sequence(values);
+	}
+	
+	public List<Sequence> generaSequenze() {
+		if (this.withMultiplicity) {
+			return generaSequenzeConRipetizioni();
+		} else {
+			return generaSequenzeSenzaRipetizioni();
+		}
+	}
+
+	private List<Sequence> generaSequenzeSenzaRipetizioni() {
+		Set<Integer> symbolSet = generaInsiemeSimboli();
+		return generaSequenze(symbolSet, this.length);
+	}
+	
+	private Set<Integer> generaInsiemeSimboli() {
+		HashSet<Integer> symbolSet = new HashSet<>();
+		for(int i=0 ; i<numberOfSymbols ; i++) {
+			symbolSet.add(i);
+		}
+		return symbolSet;
+	}
+
+	private List<Sequence> generaSequenze(Set<Integer> symbols, int lenght) {
+		List<Sequence> toReturn = new ArrayList<>();
+		if (lenght==1) {
+			for (Integer v : symbols) {
+				toReturn.add(new Sequence(v));
+			}
+		} else {
+			for (Integer v : symbols) {
+				Set<Integer> otherSymbols = new HashSet<>(symbols);
+				otherSymbols.remove(v);
+				List<Sequence> subSequence = generaSequenze(otherSymbols, lenght-1);
+				for (Sequence sequence : subSequence) {
+					toReturn.add(sequence.add(v));
+				}
+			}
+		}
+		return toReturn;
+	}
+
+	private List<Sequence> generaSequenzeConRipetizioni() {
+		List<Sequence> listaSequenzeGenerate = generaSequenzaBase();
+		for(int i=1;i<length;i++) {
+			List<Sequence> listAlPassoPrecedete = listaSequenzeGenerate;
+			listaSequenzeGenerate = new ArrayList<Sequence>();
+			for (Sequence sequence : listAlPassoPrecedete) {
+				for( int s=0 ; s<numberOfSymbols; s++) {
+					Sequence nuovaSequenza = sequence.add(s);
+					listaSequenzeGenerate.add(nuovaSequenza);
+				}
+			}
+		}		
+		return listaSequenzeGenerate;
+	}
+
+	private List<Sequence> generaSequenzaBase() {
+		ArrayList<Sequence> toReturn = new ArrayList<>();
+		for( int i=0 ; i<numberOfSymbols; i++) {
+			toReturn.add(new Sequence(i));
+		}
+		return toReturn;
 	}
 
 }

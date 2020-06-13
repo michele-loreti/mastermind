@@ -94,6 +94,11 @@ public class Sequence {
 		return "Sequence [values=" + Arrays.toString(values) + "]";
 	}
 	
-	
+	public Sequence add(int v) {
+		int[] values = Arrays.copyOf(this.values, this.values.length+1);
+		values[this.values.length] = v;
+		return new Sequence(values);
+		
+	}
 
 }
