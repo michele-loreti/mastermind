@@ -3,6 +3,8 @@
  */
 package it.unicam.cs.dsm.pas.mastermind;
 
+import java.util.Arrays;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -20,6 +22,10 @@ public class Rules {
 		this.numberOfSymbols = numberOfSymbols;
 		this.length = length;
 		this.withMultiplicity = withMultiplicity;
+		if ((!withMultiplicity)&&(length>numberOfSymbols)) {
+			throw new IllegalArgumentException("Numero di simboli insufficienti per generare una sequenza senza duplicazioni!");
+		}
+
 	}
 
 	public int getNumberOfSymbols() {
@@ -70,6 +76,44 @@ public class Rules {
 				throw new EccezionePerSimboloIllegale("Uso di un indice di simbolo illegale: "+values[i]);
 			}
 		}
+	}
+
+	public Sequence generaSequenza() {
+		if (withMultiplicity) {
+			return generaSequenzaConRipetizioni();
+		} else {
+			return generaSequenzaSenzaRipetizioni();
+		}
+	}
+
+	private Sequence generaSequenzaSenzaRipetizioni() {
+		Random r = new Random();
+		int[] indexArray = generaArrayDegliIndici();
+		for(int i=0;i<r.nextInt(10000);i++) {
+			int i1 = r.nextInt(indexArray.length);
+			int i2 = r.nextInt(indexArray.length);
+			int v = indexArray[i1];
+			indexArray[i1] = indexArray[i2];
+			indexArray[i2] = v;
+		}
+		return new Sequence(Arrays.copyOfRange(indexArray, 0, length));
+	}
+
+	private int[] generaArrayDegliIndici() {
+		int[] values = new int[numberOfSymbols];
+		for(int i=0;i<numberOfSymbols;i++) {
+			values[i] = i;
+		}
+		return values;
+	}
+
+	private Sequence generaSequenzaConRipetizioni() {
+		Random r = new Random();
+		int[] values = new int[this.length];
+		for(int i=0; i<values.length; i++) {
+			values[i] = r.nextInt(this.numberOfSymbols);
+		}
+		return new Sequence(values);
 	}
 
 }
